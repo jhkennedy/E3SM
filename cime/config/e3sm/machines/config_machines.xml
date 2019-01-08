@@ -2212,7 +2212,6 @@
                          if compiler and mpilib condition applies -->
       <!-- Always execute -->
       <modules>
-        <command name="load">python/2.7.9</command>
         <command name="unload">subversion</command>
         <command name="load">subversion/1.9.3</command>
         <command name="unload">cmake</command>

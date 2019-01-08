@@ -7,6 +7,7 @@ This does two runs: In the first we run a three member ensemble using the
 
 import sys
 import logging
+import datetime
 
 from CIME.utils import expect
 from CIME.SystemTests.system_tests_common import SystemTestsCommon
@@ -22,7 +23,14 @@ class CONDA(SystemTestsCommon):
         """
         super(CONDA, self).__init__(case)
 
-        isconda = 'conda' not in sys.version.lower() or 'continuum' not in sys.version.lower()
+        isconda = 'conda' in sys.version.lower() or 'continuum' in sys.version.lower()
 
-        expect(isconda, 'This is not running inside a Anaconda/miniconda environment. '
-                        'The system version is: "{}"'.format(sys.version))
+        expect(isconda, 'This is not running inside a Anaconda/miniconda environment.\n'
+                        '    The system version is: "{}"\n'
+                        '    The system executable is: "{}"'.format(sys.version, sys.executable))
+
+        datestamp = datetime.datetime.today().strftime('%Y%m%d-%H%M%S')
+        with open('/autofs/nccs-svm1_home1/kennedy/E3SM/E3SM/cime/scripts/CONDA_{}.log'.format(datestamp), 'w') as condalog:
+            condalog.write('CONDA:INIT: system version:\n     {}\n\n'.format(sys.version))
+            condalog.write('CONDA:INIT: system executable:\n     {}\n\n'.format(sys.executable))
+
